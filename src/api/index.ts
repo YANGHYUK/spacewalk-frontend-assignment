@@ -18,13 +18,7 @@ export type TapiError = AxiosError | Error;
 interface IaxiosInstance extends AxiosInstance {
   (config: IapiForm): Promise<TapiRes>;
 }
-enum Method {
-  POST = "POST",
-  DELETE = "DELETE",
-  PUT = "PUT",
-  PATCH = "PATCH",
-  GET = "GET",
-}
+
 export const axiosInstance: IaxiosInstance = axios.create({
   baseURL: serverURL,
   headers: {
@@ -33,9 +27,8 @@ export const axiosInstance: IaxiosInstance = axios.create({
   timeout: 10000,
 });
 
-const accessToken =
-  "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";
-// // axios refresh token
+const accessToken = "";
+
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     if (accessToken) {
