@@ -82,3 +82,13 @@ export const sortRowsByHeaders = (
     })
   );
 };
+
+/**
+ *
+ * @param start 시작 숫자
+ * @param stop 종료 숫자
+ * @param step 숫자간의 간격
+ * @returns
+ */
+export const range = (start: number, stop: number, step: number) =>
+  Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
