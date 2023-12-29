@@ -20,14 +20,35 @@ import { useGitIssuesApi } from "store/server";
 const tableHead: {
   value: string;
   key: string;
+  type: "text" | "date";
   style: CSSProperties;
 }[] = [
-  { value: "번호", key: "number", style: { textAlign: "left" } },
-  { value: "제목", key: "title", style: { textAlign: "left" } },
-  { value: "작성자", key: "user-login", style: { textAlign: "left" } },
-  { value: "작성일", key: "created_at", style: { textAlign: "center" } },
-  { value: "수정일", key: "updated_at", style: { textAlign: "center" } },
-  { value: "코멘트 수", key: "comments", style: { textAlign: "right" } },
+  { value: "번호", key: "number", type: "text", style: { textAlign: "left" } },
+  { value: "제목", key: "title", type: "text", style: { textAlign: "left" } },
+  {
+    value: "작성자",
+    key: "user-login",
+    type: "text",
+    style: { textAlign: "left" },
+  },
+  {
+    value: "작성일",
+    key: "created_at",
+    type: "date",
+    style: { textAlign: "center", width: "80px" },
+  },
+  {
+    value: "수정일",
+    key: "updated_at",
+    type: "date",
+    style: { textAlign: "center", width: "80px" },
+  },
+  {
+    value: "코멘트 수",
+    key: "comments",
+    type: "text",
+    style: { textAlign: "right", width: "60px" },
+  },
 ];
 
 const GitIssueTable = () => {
@@ -65,13 +86,24 @@ const GitIssueTable = () => {
             const rowData = Object.keys(rows).map((key, index: number) => ({
               value: rows[key],
               style: tableHead[index].style,
+              type: tableHead[index].type,
             }));
             return (
               <Tr>
                 {rowData.map((data) => {
-                  const { value, style } = data;
-
-                  return <Td style={style}>{value}</Td>;
+                  const { value, style, type } = data;
+                  switch (type) {
+                    case "text":
+                      return <Td style={style}>{value}</Td>;
+                    case "date":
+                      return (
+                        <Td style={style}>
+                          {new Date(value).toLocaleDateString()}
+                        </Td>
+                      );
+                    default:
+                      return <Td style={style}>{value}</Td>;
+                  }
                 })}
               </Tr>
             );

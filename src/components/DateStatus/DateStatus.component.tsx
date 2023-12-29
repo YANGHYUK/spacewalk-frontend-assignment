@@ -83,7 +83,7 @@ const DateStatusModalContent = ({
 const DateStatusContainer = styled.div``;
 const DateStatus = () => {
   let [searchParams] = useSearchParams();
-  const dateStatusFromParams = searchParams.get("sort") || null;
+  const dateStatusFromParams = searchParams.get("sort") || "created";
   const { openModal } = useModalStore();
   const dateStatusName = useMemo(() => {
     switch (dateStatusFromParams) {

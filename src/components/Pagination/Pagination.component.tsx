@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
 import { colors } from "../../style/theme";
+import { range } from "utils/commonFunction";
 
 interface PaginationProps {
   currentPage: number;
@@ -75,6 +76,22 @@ const Pagination: React.FC<PaginationProps> = ({
     }
   `;
 
+  const pageGroup = Math.ceil(Number(currentPage) / itemsPerPage);
+  let last = totalPages ? Number(pageGroup * itemsPerPage) : 1;
+  if (last > totalPages) last = totalPages;
+  let first =
+    last - (itemsPerPage - 1) > 0 ? Number(last - (itemsPerPage - 1)) : 1;
+  const next = last + 1;
+  const prev = first - 1;
+
+  if (totalPages < 1) {
+    first = last;
+  }
+
+  if (totalPages === 0) {
+    return null;
+  }
+
   const handlePageClick = (page: number) => {
     if (onPageChange) {
       onPageChange(page);
@@ -82,22 +99,14 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   const handlePrevClick = () => {
-    const prevLastPage = currentPage - 1;
-    const prevFirstPage = Math.max(1, prevLastPage - itemsPerPage + 1);
-    handlePageClick(prevFirstPage);
+    first > 1 && first <= currentPage && handlePageClick(prev);
   };
-
   const handleNextClick = () => {
-    const nextFirstPage = currentPage + itemsPerPage;
-    handlePageClick(nextFirstPage);
+    next > currentPage && next <= totalPages && handlePageClick(next);
   };
-  const start = Math.max(1, currentPage - Math.floor(itemsPerPage / 2));
-  const end = Math.min(totalPages, start + itemsPerPage - 1);
-
   const renderPageButtons = () => {
     const pages: JSX.Element[] = [];
-
-    for (let i = start; i <= end; i++) {
+    range(first, last, 1).forEach((i: number) => {
       pages.push(
         <button
           key={i}
@@ -107,7 +116,7 @@ const Pagination: React.FC<PaginationProps> = ({
           {i}
         </button>
       );
-    }
+    });
 
     return pages;
   };

@@ -6,6 +6,7 @@ const StyledTd = styled.td`
   font-size: 14px;
   font-weight: 500;
   padding: 6px 12px;
+  word-break: keep-all;
 `;
 const Td = ({
   children,
